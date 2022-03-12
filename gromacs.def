@@ -1,0 +1,38 @@
+# https://apptainer.org/docs/user/main/definition_files.html#multi-stage-builds
+# https://apptainer.org/docs/user/main/definition_files.html#runscript
+
+Bootstrap: docker
+From: rockylinux/rockylinux:8
+Stage: build
+
+%post
+    dnf -y install dnf-plugins-core
+    dnf config-manager --set-enabled powertools
+    dnf -y install git
+    dnf -y install make automake gcc gcc-c++ gcc-gfortran kernel-devel patch xz texinfo python2 python2-devel bzip2 bzip2-libs
+
+    git clone https://github.com/spack/spack.git -b v0.17.1 ~/spack
+    (
+    cd ~/spack
+    echo "config:
+      install_tree:
+        root: /opt" >etc/spack/config.yaml
+    )
+
+    source ~/spack/share/spack/setup-env.sh
+
+    spack compiler find
+    spack install gromacs
+    spack view --verbose symlink /opt/spack-view gromacs
+    spack gc -y
+
+
+Bootstrap: docker
+From: rockylinux/rockylinux:8
+Stage: final
+
+%files from build
+/opt
+
+#%runscript
+#    /opt/spack-view/bin/gmx "$@"
