@@ -32,7 +32,11 @@ From: rockylinux/rockylinux:8
 Stage: final
 
 %files from build
-/opt
+    /opt/linux-* /opt
+    /opt/spack-view /opt
+
+%post
+    dnf -y install libgomp
 
 #%runscript
 #    /opt/spack-view/bin/gmx "$@"
