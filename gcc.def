@@ -1,0 +1,11 @@
+Bootstrap: localimage
+From: spack.sif
+Stage: build
+
+%post
+    source ~/spack/share/spack/setup-env.sh
+
+    spack compiler find
+    spack install gcc@11.2.0
+    spack mark --implicit gcc@11.2.0
+    spack compiler find $(spack find --path gcc@11.2.0 | grep ^gcc | awk '{print $2}')
