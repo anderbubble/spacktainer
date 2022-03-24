@@ -6,3 +6,4 @@ Stage: build
     source ~/spack/share/spack/setup-env.sh
 
     spack install hdfview
+    spack mark --implicit hdfview

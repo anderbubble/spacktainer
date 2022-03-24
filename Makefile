@@ -17,5 +17,5 @@ gromacs.sif: spack gromacs-pre.def gromacs.def
 
 
 hdfview.sif: spack hdfview.def
-	apptainer build --fakeroot --update --sandbox spack hdfview.def
+	apptainer build --fakeroot --update --sandbox spack hdfview-pre.def
 	apptainer build --fakeroot --force hdfview.sif hdfview.def
