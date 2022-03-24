@@ -1,19 +1,21 @@
-all: gromacs.sif
+all: gromacs.sif hdfview.sif
 .PHONY: all
 
 
 clean:
-	rm -rf *.sif
+	rm -rf *.sif spack
 .PHONY: clean
 
 
-spack.sif: spack.def
-	apptainer build --fakeroot --force spack.sif spack.def
+spack: spack.def
+	apptainer build --fakeroot --force --sandbox spack spack.def
 
 
-gcc.sif: gcc.def spack.sif
-	apptainer build --fakeroot --force gcc.sif gcc.def
-
-
-gromacs.sif: gromacs.def spack.sif
+gromacs.sif: spack gromacs-pre.def gromacs.def
+	apptainer build --fakeroot --update --sandbox spack gromacs-pre.def
 	apptainer build --fakeroot --force gromacs.sif gromacs.def
+
+
+hdfview.sif: spack hdfview.def
+	apptainer build --fakeroot --update --sandbox spack hdfview.def
+	apptainer build --fakeroot --force hdfview.sif hdfview.def

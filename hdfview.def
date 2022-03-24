@@ -5,8 +5,8 @@ Stage: build
 %post
     source ~/spack/share/spack/setup-env.sh
 
-    spack install gromacs@2021.3
-    spack view --verbose symlink /usr/local/spack gromacs@2021.3
+    spack install hdfview
+    spack view --verbose symlink /usr/local/spack hdfview
 
     spack gc -y
 
@@ -19,8 +19,4 @@ Stage: final
     /opt/linux-* /opt/
     /usr/local/spack
 
-%post
-    dnf -y install libgomp
-
-%runscript
-    /usr/local/spack/bin/mpirun /usr/local/spack/bin/mpi_gmx "$@"
+#%runscript

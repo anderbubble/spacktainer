@@ -1,0 +1,9 @@
+Bootstrap: localimage
+From: spack
+Stage: build
+
+%post
+    source ~/spack/share/spack/setup-env.sh
+
+    spack install gromacs@2021.3
+    spack mark --implicit gromacs@2021.3
